@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioHub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Tela de Login -->
+    <div id="login" class="container">
+        <h2>AudioHub - Login</h2>
+        <input type="text" id="username" class="login-input" placeholder="Usuário">
+        <input type="password" id="password" class="login-input" placeholder="Senha">
+        <button class="login-btn" onclick="checkLogin()">Entrar</button>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div id="content" class="container">
+        <h2>AudioHub</h2>
+        <input type="text" id="search" class="search-bar" placeholder="Buscar áudio..." onkeyup="filterAudio()">
+        <ul id="audioList">
+            <!-- Exemplo de Áudio com Nome -->
+            <li class="audioItem">
+                <audio controls>
+                    <source src="audios/caralhomariana.mp3" type="audio/mp3">
+                </audio>
+                <p class="audioName">caralho mariana</p>
+                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
+            </li>
+            <li class="audioItem">
+                <audio controls>
+                    <source src="audios/fazol.mp3" type="audio/mp3">
+                </audio>
+                <p class="audioName">faz o L</p>
+                <button class="share-btn" onclick="shareWhatsApp('audio2.mp3')">Compartilhar</button>
+            </li>
+            <li class="audioItem">
+                <audio controls>
+                    <source src="audios/teamomeudocinhodeleite.mp3" type="audio/mp3">
+                </audio>
+                <p class="audioName">Te amo meu docinho de leite</p>
+                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Função de Login
+        function checkLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            if (username === "eagle" && password === "4425102001") {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("content").style.display = "block";
+            } else {
+                alert("Usuário ou senha incorretos.");
+            }
+        }
+
+        // Função para Compartilhar no WhatsApp
+        function shareWhatsApp(audioFile) {
+            const url = `https://wa.me/?text=Confira este áudio engraçado: ${window.location.href + audioFile}`;
+            window.open(url, "_blank");
+        }
+
+        // Função para Filtrar Áudios
+        function filterAudio() {
+            const searchValue = document.getElementById("search").value.toLowerCase();
+            const audioItems = document.querySelectorAll(".audioItem");
+            audioItems.forEach(item => {
+                const audioSrc = item.querySelector(".audioName").textContent.toLowerCase();
+                item.style.display = audioSrc.includes(searchValue) ? "" : "none";
+            });
+        }
+
+        // Exibir o login no carregamento
+        document.getElementById("login").style.display = "block";
+    </script>
+
+</body>
+</html>
