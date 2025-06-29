@@ -4,76 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AudioHub</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos globais */
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --danger: #d63031;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
+        }
+        
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        /* Títulos */
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 28px;
+            margin: 20px 0;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        /* Tela de login */
+        #login {
+            padding: 40px;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .login-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Conteúdo principal */
+        #content {
+            display: none;
+            padding: 20px;
+        }
+        
+        /* Barra de pesquisa */
+        .search-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .search-bar {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-bar:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+        
+        /* Lista de áudios */
+        #audioList {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .audioItem {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .audioItem:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .audioItem audio {
+            width: 100%;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        
+        /* Nome do áudio */
+        .audioName {
+            font-size: 16px;
+            color: var(--dark);
+            margin: 10px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Botão de compartilhar */
+        .share-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 12px;
+            }
+            
+            #login {
+                padding: 30px 20px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+        }
+        
+        /* Efeitos de foco */
+        .btn-press:active {
+            transform: scale(0.98);
+        }
+        
+        /* Mensagem de erro */
+        .error-message {
+            color: var(--danger);
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .show-error {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Tela de Login -->
     <div id="login" class="container">
-        <h2>AudioHub - Login</h2>
+        <h2>AudioHub</h2>
+        <p style="text-align: center; margin-bottom: 20px; color: #666;">Faça login para acessar sua biblioteca de áudios</p>
         <input type="text" id="username" class="login-input" placeholder="Usuário">
         <input type="password" id="password" class="login-input" placeholder="Senha">
-        <button class="login-btn" onclick="checkLogin()">Entrar</button>
+        <button class="login-btn btn-press" onclick="checkLogin()">Entrar <i class="fas fa-arrow-right"></i></button>
+        <div id="errorMessage" class="error-message">Usuário ou senha incorretos</div>
     </div>
 
     <!-- Conteúdo Principal -->
     <div id="content" class="container">
         <h2>AudioHub</h2>
-        <input type="text" id="search" class="search-bar" placeholder="Buscar áudio..." onkeyup="filterAudio()">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="search" class="search-bar" placeholder="Buscar áudio..." onkeyup="filterAudio()">
+        </div>
         <ul id="audioList">
-            
-            
             <li class="audioItem">
                 <audio controls>
                     <source src="audios/caralhomariana.mp3" type="audio/mp3">
                 </audio>
                 <p class="audioName">caralho mariana</p>
-                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
+                <button class="share-btn btn-press" onclick="shareWhatsApp('audio1.mp3')">
+                    <i class="fab fa-whatsapp"></i> Compartilhar
+                </button>
             </li>
             <li class="audioItem">
                 <audio controls>
                     <source src="audios/fazol.mp3" type="audio/mp3">
                 </audio>
                 <p class="audioName">faz o L</p>
-                <button class="share-btn" onclick="shareWhatsApp('audio2.mp3')">Compartilhar</button>
+                <button class="share-btn btn-press" onclick="shareWhatsApp('audio2.mp3')">
+                    <i class="fab fa-whatsapp"></i> Compartilhar
+                </button>
             </li>
+           
             <li class="audioItem">
-                <audio controls>
-                    <source src="audios/teamomeudocinhodeleite.mp3" type="audio/mp3">
-                </audio>
-                <p class="audioName">Te amo meu docinho de leite</p>
-                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
-            </li>
-  <li class="audioItem">
                 <audio controls>
                     <source src="audios/dinheironobolso1.mp3" type="audio/mp3">
                 </audio>
                 <p class="audioName">Dinheiro no bolso</p>
-                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
+                <button class="share-btn btn-press" onclick="shareWhatsApp('audio1.mp3')">
+                    <i class="fab fa-whatsapp"></i> Compartilhar
+                </button>
             </li>
-              <li class="audioItem">
+            <li class="audioItem">
                 <audio controls>
                     <source src="audios/ensinanalfabeta.mp3" type="audio/mp3">
                 </audio>
                 <p class="audioName">Ensina a analfabeta</p>
-                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
+                <button class="share-btn btn-press" onclick="shareWhatsApp('audio1.mp3')">
+                    <i class="fab fa-whatsapp"></i> Compartilhar
+                </button>
             </li>
-              <li class="audioItem">
+            <li class="audioItem">
                 <audio controls>
                     <source src="audios/xoudaxuxa.mp3" type="audio/mp3">
                 </audio>
                 <p class="audioName">Que show da xuxa é esse?</p>
-                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
+                <button class="share-btn btn-press" onclick="shareWhatsApp('audio1.mp3')">
+                    <i class="fab fa-whatsapp"></i> Compartilhar
+                </button>
             </li>
-
-             <li class="audioItem">
+            <li class="audioItem">
                 <audio controls>
                     <source src="audios/tocomfome.mp3" type="audio/mp3">
                 </audio>
                 <p class="audioName">Tô com fome, Mariana</p>
-                <button class="share-btn" onclick="shareWhatsApp('audio1.mp3')">Compartilhar</button>
+                <button class="share-btn btn-press" onclick="shareWhatsApp('audio1.mp3')">
+                    <i class="fab fa-whatsapp"></i> Compartilhar
+                </button>
             </li>
-            
         </ul>
     </div>
 
@@ -82,11 +320,16 @@
         function checkLogin() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            if (username === "eagle" && password === "4425102001") {
+            const errorMessage = document.getElementById("errorMessage");
+            
+            if (username === "" && password === "") {
                 document.getElementById("login").style.display = "none";
                 document.getElementById("content").style.display = "block";
+                errorMessage.classList.remove("show-error");
             } else {
-                alert("Usuário ou senha incorretos.");
+                errorMessage.classList.add("show-error");
+                document.getElementById("password").value = "";
+                document.getElementById("password").focus();
             }
         }
 
@@ -100,14 +343,23 @@
         function filterAudio() {
             const searchValue = document.getElementById("search").value.toLowerCase();
             const audioItems = document.querySelectorAll(".audioItem");
+            
             audioItems.forEach(item => {
-                const audioSrc = item.querySelector(".audioName").textContent.toLowerCase();
-                item.style.display = audioSrc.includes(searchValue) ? "" : "none";
+                const audioName = item.querySelector(".audioName").textContent.toLowerCase();
+                item.style.display = audioName.includes(searchValue) ? "flex" : "none";
             });
         }
 
+        // Adiciona evento de tecla para login ao pressionar Enter
+        document.getElementById("password").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkLogin();
+            }
+        });
+
         // Exibir o login no carregamento
         document.getElementById("login").style.display = "block";
+        document.getElementById("content").style.display = "none";
     </script>
 
 </body>
